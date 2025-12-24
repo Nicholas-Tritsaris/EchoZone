@@ -1,9 +1,7 @@
 ---
 created: 2025-12-24T11:18:02+11:00
-modified: 2025-12-24T11:18:12+11:00
+modified: 2025-12-24T11:31:03+11:00
 ---
-
-# EchoZone – Architecture
 
 # EchoZone – Architecture
 
