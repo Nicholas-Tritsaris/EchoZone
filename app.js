@@ -10,6 +10,7 @@ let currentUser = null;
 
 // Initialize Auth0
 async function initAuth0() {
+    console.log("Initializing Auth0 with:", auth0Config);
     try {
         auth0Client = await auth0.createAuth0Client({
             domain: auth0Config.domain,
@@ -22,6 +23,7 @@ async function initAuth0() {
         // Check if user is returning from login redirect
         const query = window.location.search;
         if (query.includes("code=") && query.includes("state=")) {
+            console.log("Handling redirect callback...");
             await auth0Client.handleRedirectCallback();
             window.history.replaceState({}, document.title, window.location.pathname);
         }
@@ -34,9 +36,11 @@ async function initAuth0() {
 
 async function updateAuthUI() {
     const isAuthenticated = await auth0Client.isAuthenticated();
+    console.log("Is authenticated:", isAuthenticated);
 
     if (isAuthenticated) {
         currentUser = await auth0Client.getUser();
+        console.log("User:", currentUser);
         document.getElementById("btn-login").classList.add("hidden");
         document.getElementById("btn-logout").classList.remove("hidden");
         document.getElementById("app-container").classList.remove("hidden");
@@ -219,6 +223,7 @@ window.onclick = (event) => { if (event.target == modal) modal.classList.add("hi
 
 // Event Listeners
 document.getElementById("btn-login").onclick = () => {
+    console.log("Login button clicked");
     auth0Client.loginWithRedirect();
 };
 
@@ -260,4 +265,4 @@ async function loadHistory() {
 }
 
 // Initial Call
-window.onload = initAuth0;
+window.addEventListener('load', initAuth0);
