@@ -10,13 +10,20 @@ let currentUser = null;
 
 // Initialize Auth0
 async function initAuth0() {
-    console.log("Initializing Auth0 with:", auth0Config);
+    // Determine the current URL without query params or fragments
+    const redirectUri = window.location.origin + window.location.pathname;
+
+    console.log("Initializing Auth0");
+    console.log("Domain:", auth0Config.domain);
+    console.log("Client ID:", auth0Config.clientId);
+    console.log("Redirect URI (MUST match Auth0 Dashboard):", redirectUri);
+
     try {
         auth0Client = await auth0.createAuth0Client({
             domain: auth0Config.domain,
             clientId: auth0Config.clientId,
             authorizationParams: {
-                redirect_uri: window.location.origin + window.location.pathname
+                redirect_uri: redirectUri
             }
         });
 
@@ -228,7 +235,9 @@ document.getElementById("btn-login").onclick = () => {
 };
 
 document.getElementById("btn-logout").onclick = () => {
-    auth0Client.logout({ logoutParams: { returnTo: window.location.origin + window.location.pathname } });
+    const returnTo = window.location.origin + window.location.pathname;
+    console.log("Logging out. Return to:", returnTo);
+    auth0Client.logout({ logoutParams: { returnTo: returnTo } });
 };
 
 document.getElementById("btn-refresh-loc").onclick = getLocation;
