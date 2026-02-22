@@ -1,7 +1,7 @@
-// Auth0 Configuration Placeholders
+// Auth0 Configuration
 const auth0Config = {
-    domain: "YOUR_AUTH0_DOMAIN",
-    clientId: "YOUR_AUTH0_CLIENT_ID"
+    domain: "blueboop.au.auth0.com",
+    clientId: "AFWFFI2yAlvymluiWfH7uKFmgH01h6mj"
 };
 
 let auth0Client = null;
@@ -15,7 +15,7 @@ async function initAuth0() {
             domain: auth0Config.domain,
             clientId: auth0Config.clientId,
             authorizationParams: {
-                redirect_uri: window.location.origin
+                redirect_uri: window.location.origin + window.location.pathname
             }
         });
 
@@ -23,7 +23,7 @@ async function initAuth0() {
         const query = window.location.search;
         if (query.includes("code=") && query.includes("state=")) {
             await auth0Client.handleRedirectCallback();
-            window.history.replaceState({}, document.title, "/");
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
 
         updateAuthUI();
@@ -223,7 +223,7 @@ document.getElementById("btn-login").onclick = () => {
 };
 
 document.getElementById("btn-logout").onclick = () => {
-    auth0Client.logout({ logoutParams: { returnTo: window.location.origin } });
+    auth0Client.logout({ logoutParams: { returnTo: window.location.origin + window.location.pathname } });
 };
 
 document.getElementById("btn-refresh-loc").onclick = getLocation;
