@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoZone - Local Anonymous Social</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Auth0 SPA SDK -->
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">EchoZone</div>
+        <div id="auth-controls">
+            <button id="btn-login" class="btn">Log In</button>
+            <button id="btn-logout" class="btn hidden">Log Out</button>
+        </div>
+    </header>
+
+    <main id="app-container" class="hidden">
+        <nav class="tabs">
+            <button id="tab-feed" class="tab-btn active">Local Feed</button>
+            <button id="tab-history" class="tab-btn">My History</button>
+        </nav>
+
+        <section id="location-status" class="status-bar">
+            <span>Detecting location...</span>
+            <button id="btn-refresh-loc" class="btn-text">Refresh</button>
+        </section>
+
+        <section id="feed-container">
+            <div id="feed"></div>
+            <button id="btn-post-modal" class="fab">+</button>
+        </section>
+
+        <section id="history-container" class="hidden">
+            <div id="history"></div>
+        </section>
+    </main>
+
+    <div id="post-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Create an Echo</h2>
+            <textarea id="post-text" placeholder="What's happening?" maxlength="200"></textarea>
+            <button id="btn-submit-post" class="btn btn-primary">Post</button>
+        </div>
+    </div>
+
+    <div id="welcome-screen">
+        <h1>Welcome to EchoZone</h1>
+        <p>Anonymous, location-based sharing.</p>
+        <p>Please log in to continue.</p>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, query, where, orderBy, getDocs, Timestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDi21XaltvjBrOiYp5Vs9JpbRhHliZluS0",
+            authDomain: "my-webpages-200a1.firebaseapp.com",
+            projectId: "my-webpages-200a1",
+            storageBucket: "my-webpages-200a1.firebasestorage.app",
+            messagingSenderId: "458562818634",
+            appId: "1:458562818634:web:52af74fc76f27ac6b54cb3",
+            measurementId: "G-D5D0JWGXG6"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        // Expose Firebase tools to app.js
+        window.firebaseTools = {
+            db,
+            collection,
+            addDoc,
+            query,
+            where,
+            orderBy,
+            getDocs,
+            Timestamp
+        };
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>
